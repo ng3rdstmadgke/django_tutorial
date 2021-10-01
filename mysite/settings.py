@@ -69,6 +69,11 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
@@ -122,7 +127,7 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'DEBUG',
     },
-    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
