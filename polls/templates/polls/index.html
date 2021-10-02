@@ -1,6 +1,11 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
+<ul>
+ <li><a href="{% url 'accounts:index' %}">home</a></li>
+ <li><a href="{% url 'polls:index' %}">polls home</a></li>
+</ul>
+
 {% if latest_question_list %}
 <ul>
   {% for question in latest_question_list %}
@@ -16,4 +21,3 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
-

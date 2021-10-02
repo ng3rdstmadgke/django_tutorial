@@ -15,6 +15,10 @@ import logging
 """
 
 def index(request):
+    """
+    - ログインしているかどうかの確認
+      https://docs.djangoproject.com/ja/3.2/topics/auth/default/#limiting-access-to-logged-in-users
+    """
     context = {}
     if request.user.is_authenticated:
         context["auth_user"] = request.user
@@ -30,6 +34,10 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('accounts:index'))
 
 class UserLogin(View):
+    """
+    - クラスベースのビュー
+      https://docs.djangoproject.com/ja/3.2/topics/class-based-views/intro/
+    """
     def post(self, request):
         """
         - ログイン

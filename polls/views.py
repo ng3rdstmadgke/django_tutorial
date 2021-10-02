@@ -4,6 +4,8 @@ from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import Question
 import logging
 logger = logging.getLogger(__name__)
@@ -22,8 +24,8 @@ logger = logging.getLogger(__name__)
 #     #####
 #     return render(request, "polls/index.html", context)
 #     #####
-# 
-# 
+#
+#
 # def detail(request, question_id):
 #     #####
 #     # try:
@@ -34,13 +36,17 @@ logger = logging.getLogger(__name__)
 #     question = get_object_or_404(Question, pk=question_id)
 #     #####
 #     return render(request, "polls/detail.html", {"question": question})
-# 
+#
 # def results(request, question_id):
 #     question = get_object_or_404(Question, pk=question_id)
 #     return render(request, 'polls/results.html', {"question": question})
 #####
 ##### 汎用ビュー
 class IndexView(generic.ListView):
+    """
+    - クラスベースのビュー
+      https://docs.djangoproject.com/ja/3.2/topics/class-based-views/intro/
+    """
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
     def get_queryset(self):
@@ -55,12 +61,28 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         return Question.objects.filter(pub_date__lte=timezone.now()) # pub_dateが未来の記事は参照できないようにする
 
+@method_decorator(login_required, name='dispatch')
 class ResultsView(generic.DetailView):
+    """
+    - クラスベースのビューのデコレーション(ログイン)
+      https://docs.djangoproject.com/ja/3.2/topics/class-based-views/intro/#decorating-the-class
+    """
     model = Question
     template_name = 'polls/results.html'
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 #####
 
+@login_required
 def vote(request, question_id):
+    """
+    - ログインしているユーザーにアクセスを制限する
+      https://docs.djangoproject.com/ja/3.2/topics/auth/default/#the-login-required-decorator
+
+    ログインしていない場合はsettings.pyのLOGIN_URLにリダイレクトする
+    """
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
