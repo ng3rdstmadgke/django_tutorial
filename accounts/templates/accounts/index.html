@@ -1,8 +1,10 @@
 <h1>Hello mysite !!</h1>
+{% if auth_user %}
+<h3>User: {{ auth_user.username }}, Mail: {{ auth_user.email}}</h3>
+{% endif %}
 
 <ul>
-  <li><a href="{% url 'polls:index' %}">polls</a></li>
+  <li><a href="{% url 'accounts:login' %}">login</a></li>
+  <li><a href="{% url 'accounts:logout' %}">logout</a></li>
+  <li><a href="{% url 'polls:index' %}">polls App</a></li>
 </ul>
-
-
-

@@ -1,0 +1,26 @@
+<form id="js_user_create" method="POST" action="{% url 'accounts:create' %}">
+  {% csrf_token %}
+  <div>
+  <label>ユーザー名</label>
+  <input type="text" name="username" value="{{ username }}" maxlength="150" required>
+  </div>
+  <div>
+  <label>パスワード</label>
+  <input id="js_password_1" type="password" name="password1" required>
+  </div>
+  <div>
+  <label>パスワード(確認)</label>
+  <input id="js_password_2" type="password" name="password2" required>
+  </div>
+  <button type="submit">新規作成</button>
+</form>
+<script>
+  document.getElementById("js_user_create").addEventListener("submit", function(e) {
+    pwd1 = document.getElementById("js_password_1").value;
+    pwd2 = document.getElementById("js_password_2").value;
+    if (pwd1 != pwd2) {
+      alert("確認用のパスワードが一致しません")
+      e.preventDefault();
+    }
+  })
+</script>
